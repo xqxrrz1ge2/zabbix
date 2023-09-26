@@ -1,5 +1,9 @@
 #!/usr/bin/python3
 
+#####################################
+## 09/26/2023, inital
+#####################################
+
 import os
 import re
 
@@ -40,6 +44,8 @@ def monitor_logs(log_file, keyword):
 def read_config_and_monitor():
     with open(CONFIG_FILE, 'r') as f:
         for line in f:
+            if line.startswith('#'):
+                continue
             filetag, file_dir, file_name, keyword = line.strip().split(';')
             log_file = os.path.join(file_dir, file_name)
             monitor_logs(log_file, keyword)

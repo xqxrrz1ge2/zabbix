@@ -1,0 +1,26 @@
+#requirements
+
+1. Runnig agent as root
+To override the default user and group for Zabbix agent, run:
+    systemctl edit zabbix-agent or systemctl edit zabbix-agent2
+Add the following content:
+    [Service]
+    User=root
+    Group=root
+Reload daemons and restart the zabbix-agent service:
+    systemctl daemon-reload
+    systemctl restart zabbix-agent
+
+
+
+Log Monitoring:
+1. Make new dir for scripts:
+    mkdir /etc/zabbix/scripts
+2. Copy zbx_logMonitor.py and zbx_logMonitor.conf to /etc/zabbix/scripts:
+3. Add user params config file in dir /etc/zabbix/zabbix_agent2.d or /etc/zabbix/zabbix_agent.d:
+4. Create userparams.conf:
+    touch userparams.conf
+5. Add lines to this file:
+    UserParameter=logmon,/etc/zabbix/scripts/zbx_logMonitor.py
+6. Add your log monitoring item on Zabbix WebGUI
+7. Create related trigger
