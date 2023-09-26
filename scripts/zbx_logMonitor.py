@@ -35,7 +35,7 @@ def monitor_logs(log_file, keyword):
         f.seek(last_read_position)
         for line in f:
             if re.search(keyword, line):
-                print(f'Keyword "{keyword}" found in {log_file}: {line}', end='')
+                print(f'PROBLEM: Keyword "{keyword}" found in {log_file}: {line}', end='')
                 keyword_found = True
         set_last_read_position(log_file, f.tell())
     if not keyword_found:
