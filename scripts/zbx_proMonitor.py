@@ -21,8 +21,8 @@ def read_config(filename):
             # 忽略以#开头的注释行和空行
             if line.strip() and not line.startswith('#'):
                 parts = line.strip().split(';')
-                if len(parts) == 4:
-                    tag, process_name, user, process_count = parts
+                if len(parts) == 5:
+                    tag, process_name, user, process_count, severity = parts
                     # 如果 process_count 或 user 设置为 "-"，则将其设为 None
                     if process_count == "-":
                         process_count = None
@@ -30,7 +30,7 @@ def read_config(filename):
                         process_count = int(process_count)
                     if user == "-":
                         user = None
-                    config[tag] = {'process_name': process_name, 'user': user, 'process_count': process_count}
+                    config[tag] = {'process_name': process_name, 'user': user, 'process_count': process_count, 'severity': severity}
     return config
 
 # 根据操作系统获取检查进程是否运行的命令
@@ -73,14 +73,17 @@ def main():
         process_name = info['process_name']
         user = info['user']
         process_count = info['process_count']
+        severity = info['severity']
+        #convert severity to upper case
+        severity = severity.upper()
 
         if not is_process_running(process_name, user, process_count):
-            problem_processes.append(f"{tag}: {process_name}")
+            problem_processes.append(f"{tag}:{process_name}")
 
     if not problem_processes:
         print("OK")
     else:
-        print("PROBLEM: " + ', '.join(problem_processes) + " are not running as expected")
+        print("PROBLEM:".join(severity) + ':'.join(problem_processes) + " are not running as expected.")
 
 if __name__ == "__main__":
     main()
