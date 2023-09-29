@@ -78,12 +78,12 @@ def main():
         severity = severity.upper()
 
         if not is_process_running(process_name, user, process_count):
-            problem_processes.append(f"{tag}:{process_name}")
+            problem_processes.append(f"{tag} {process_name}")
 
     if not problem_processes:
         print("OK")
     else:
-        print("PROBLEM:".join(severity) + ':'.join(problem_processes) + " are not running as expected.")
+        print("PROBLEM:"+ severity + ': ' + ','.join(problem_processes) + ", are not running as expected.")
 
 if __name__ == "__main__":
     main()
