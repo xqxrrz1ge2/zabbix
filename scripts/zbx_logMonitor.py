@@ -11,6 +11,12 @@ SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 CONFIG_FILE = os.path.join(SCRIPT_DIR, 'zbx_logMonitor.conf')
 TMP_DIR = os.path.join(SCRIPT_DIR, 'tmp')
 
+def parse_args():
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-s', '--severity', default='INFO', help='severity')
+    return parser.parse_args()
+
 def get_last_read_position(log_file):
     position_file = os.path.join(TMP_DIR, f'{os.path.basename(log_file)}.pos')
     if os.path.exists(position_file):
@@ -44,13 +50,17 @@ def monitor_logs(filetag, log_file, keyword, severity):
         print('OK')
 
 def read_config_and_monitor():
+    args = parse_args()
+    severity_param = args.severity
     with open(CONFIG_FILE, 'r') as f:
         for line in f:
             if line.startswith('#'):
                 continue
-            filetag, file_dir, file_name, keyword,severity = line.strip().split(';')
-            log_file = os.path.join(file_dir, file_name)
-            monitor_logs(filetag, log_file, keyword, severity)
+            filetag, file_dir, file_name, keyword, severity = line.strip().split(';')
+            #check severity_param with severity, convert them to lower case first
+            if severity_param.lower() == severity.lower():
+                log_file = os.path.join(file_dir, file_name)
+                monitor_logs(filetag, log_file, keyword, severity)
 
 if __name__ == '__main__':
     read_config_and_monitor()
