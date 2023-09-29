@@ -21,6 +21,23 @@ Log Monitoring:
 4. Create userparams.conf:
     touch userparams.conf
 5. Add lines to this file:
-    UserParameter=logmon,/etc/zabbix/scripts/zbx_logMonitor.py
+    UserParameter=logmonwarning,/etc/zabbix/scripts/zbx_logMonitor.py -s warning
+    UserParameter=logmoncritical,/etc/zabbix/scripts/zbx_logMonitor.py -s critical
+    UserParameter=logmonfatal,/etc/zabbix/scripts/zbx_logMonitor.py -s fatal
+6. Add your log monitoring item on Zabbix WebGUI
+7. Create related trigger
+
+
+Process Monitoring:
+1. Make new dir for scripts:
+    mkdir /etc/zabbix/scripts
+2. Copy zbx_logMonitor.py and zbx_logMonitor.conf to /etc/zabbix/scripts:
+3. Add user params config file in dir /etc/zabbix/zabbix_agent2.d or /etc/zabbix/zabbix_agent.d:
+4. Create userparams.conf:
+    touch userparams.conf
+5. Add lines to this file:
+    UserParameter=processmonwarning,/etc/zabbix/scripts/zbx_proMonitor.py -s warning
+    UserParameter=processmoncritical,/etc/zabbix/scripts/zbx_proMonitor.py -s critical
+    UserParameter=processmonfatal,/etc/zabbix/scripts/zbx_proMonitor.py -s fatal
 6. Add your log monitoring item on Zabbix WebGUI
 7. Create related trigger
