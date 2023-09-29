@@ -24,7 +24,9 @@ def set_last_read_position(log_file, position):
     with open(position_file, 'w') as f:
         f.write(str(position))
 
-def monitor_logs(log_file, keyword):
+def monitor_logs(filetag, log_file, keyword, severity):
+    # convert severity to upper case
+    severity = severity.upper()
     if not os.path.exists(TMP_DIR):
         os.makedirs(TMP_DIR)
     last_read_position = get_last_read_position(log_file)
@@ -35,7 +37,7 @@ def monitor_logs(log_file, keyword):
         f.seek(last_read_position)
         for line in f:
             if re.search(keyword, line):
-                print(f'PROBLEM: Keyword "{keyword}" found in {log_file}: {line}', end='')
+                print(f'PROBLEM:{filetag}:{severity}:Keyword "{keyword}" found in {log_file}: {line}', end='')
                 keyword_found = True
         set_last_read_position(log_file, f.tell())
     if not keyword_found:
@@ -46,9 +48,9 @@ def read_config_and_monitor():
         for line in f:
             if line.startswith('#'):
                 continue
-            filetag, file_dir, file_name, keyword = line.strip().split(';')
+            filetag, file_dir, file_name, keyword,severity = line.strip().split(';')
             log_file = os.path.join(file_dir, file_name)
-            monitor_logs(log_file, keyword)
+            monitor_logs(filetag, log_file, keyword, severity)
 
 if __name__ == '__main__':
     read_config_and_monitor()
