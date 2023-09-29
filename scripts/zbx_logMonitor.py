@@ -18,7 +18,9 @@ def parse_args():
     return parser.parse_args()
 
 def get_last_read_position(log_file):
-    position_file = os.path.join(TMP_DIR, f'{os.path.basename(log_file)}.pos')
+    args = parse_args()
+    severity_param = args.severity
+    position_file = os.path.join(TMP_DIR, f'{os.path.basename(log_file)}.{severity_param}.pos')
     if os.path.exists(position_file):
         with open(position_file, 'r') as f:
             return int(f.read())
@@ -26,7 +28,9 @@ def get_last_read_position(log_file):
         return 0
 
 def set_last_read_position(log_file, position):
-    position_file = os.path.join(TMP_DIR, f'{os.path.basename(log_file)}.pos')
+    args = parse_args()
+    severity_param = args.severity
+    position_file = os.path.join(TMP_DIR, f'{os.path.basename(log_file)}.{severity_param}.pos')
     with open(position_file, 'w') as f:
         f.write(str(position))
 
