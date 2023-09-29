@@ -20,12 +20,14 @@ def parse_args():
 
 # 读取配置文件并解析为字典
 def read_config(filename):
+    args = parse_args()
+    severity_param = args.severity
     config = {}
     with open(filename, 'r') as file:
         lines = file.readlines()
         for line in lines:
             # 忽略以#开头的注释行和空行
-            if line.strip() and not line.startswith('#'):
+            if line.strip() and not line.startswith('#') and (severity_param.lower() in line or severity_param.upper() in line):
                 parts = line.strip().split(';')
                 if len(parts) == 5:
                     tag, process_name, user, process_count, severity = parts
@@ -72,11 +74,7 @@ def is_process_running(process_name, user, process_count):
 
 def main():
     config = read_config(config_file)
-    args = parse_args()
-    severity_param = args.severity
-    
     problem_processes = []
-
     for tag, info in config.items():
         process_name = info['process_name']
         user = info['user']
@@ -84,14 +82,13 @@ def main():
         severity = info['severity']
         #convert severity to upper case
         severity = severity.upper()
-        if severity_param.lower() == severity.lower():
-            if not is_process_running(process_name, user, process_count):
-                problem_processes.append(f"{tag} {process_name}")
+        if not is_process_running(process_name, user, process_count):
+            problem_processes.append(f"{tag} {process_name}")
 
-        if not problem_processes:
-            print("OK")
-        else:
-            print("PROBLEM:"+ severity + ': ' + ','.join(problem_processes) + ", are not running as expected.")
+    if not problem_processes:
+        print("OK")
+    else:
+        print("PROBLEM:"+ severity + ': ' + ','.join(problem_processes) + ", are not running as expected.")
 
 if __name__ == "__main__":
     main()
