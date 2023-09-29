@@ -12,6 +12,12 @@ import platform
 script_dir = os.path.dirname(os.path.abspath(__file__))
 config_file = os.path.join(script_dir, 'zbx_proMonitor.conf')
 
+def parse_args():
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-s', '--severity', default='INFO', help='severity')
+    return parser.parse_args()
+
 # 读取配置文件并解析为字典
 def read_config(filename):
     config = {}
@@ -66,6 +72,8 @@ def is_process_running(process_name, user, process_count):
 
 def main():
     config = read_config(config_file)
+    args = parse_args()
+    severity_param = args.severity
     
     problem_processes = []
 
@@ -76,14 +84,14 @@ def main():
         severity = info['severity']
         #convert severity to upper case
         severity = severity.upper()
+        if severity_param.lower() == severity.lower():
+            if not is_process_running(process_name, user, process_count):
+                problem_processes.append(f"{tag} {process_name}")
 
-        if not is_process_running(process_name, user, process_count):
-            problem_processes.append(f"{tag} {process_name}")
-
-    if not problem_processes:
-        print("OK")
-    else:
-        print("PROBLEM:"+ severity + ': ' + ','.join(problem_processes) + ", are not running as expected.")
+        if not problem_processes:
+            print("OK")
+        else:
+            print("PROBLEM:"+ severity + ': ' + ','.join(problem_processes) + ", are not running as expected.")
 
 if __name__ == "__main__":
     main()
