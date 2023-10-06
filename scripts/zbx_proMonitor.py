@@ -7,16 +7,22 @@
 import os
 import subprocess
 import platform
+import argparse
 
 # 获取脚本所在目录的绝对路径
 script_dir = os.path.dirname(os.path.abspath(__file__))
 config_file = os.path.join(script_dir, 'zbx_proMonitor.conf')
 
 def parse_args():
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-s', '--severity', default='INFO', help='severity')
-    return parser.parse_args()
+    parser = argparse.ArgumentParser(description='This script monitors process.')
+    parser.add_argument('-s', '--severity', required=True, help='Set the severity level for checking.')
+    args = parser.parse_args()
+
+    if not args.severity:
+        parser.print_help()
+        exit()
+
+    return args
 
 # 读取配置文件并解析为字典
 def read_config(filename):
