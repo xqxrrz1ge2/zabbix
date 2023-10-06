@@ -59,12 +59,13 @@ def monitor_logs(filetag, log_file, keyword, severity):
                 print(f'PROBLEM:{severity}:{filetag}:Keyword "{keyword}" found in {log_file}: {line}', end='')
                 keyword_found = True
         set_last_read_position(log_file, f.tell(), keyword)
-    if not keyword_found:
-        print('OK')
+
+    return keyword_found
 
 def read_config_and_monitor():
     args = parse_args()
     severity_param = args.severity
+    results = []
     with open(CONFIG_FILE, 'r') as f:
         for line in f:
             if line.startswith('#'):
@@ -73,7 +74,11 @@ def read_config_and_monitor():
             #check severity_param with severity, convert them to lower case first
             if severity_param.lower() == severity.lower():
                 log_file = os.path.join(file_dir, file_name)
-                monitor_logs(filetag, log_file, keyword, severity)
+                results.append(monitor_logs(filetag, log_file, keyword, severity))
+    
+    if not True in results:
+        print('OK', end='')
+    
 
 if __name__ == '__main__':
     read_config_and_monitor()
