@@ -6,6 +6,7 @@
 
 import os
 import re
+import hashlib
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 CONFIG_FILE = os.path.join(SCRIPT_DIR, 'zbx_logMonitor.conf')
@@ -17,20 +18,22 @@ def parse_args():
     parser.add_argument('-s', '--severity', default='INFO', help='severity')
     return parser.parse_args()
 
-def get_last_read_position(log_file):
+def get_last_read_position(log_file, keyword):
     args = parse_args()
     severity_param = args.severity
-    position_file = os.path.join(TMP_DIR, f'{os.path.basename(log_file)}.{severity_param}.pos')
+    keyword_hash = hashlib.md5(keyword.encode('utf-8')).hexdigest()
+    position_file = os.path.join(TMP_DIR, f'{os.path.basename(log_file)}.{severity_param}.{keyword_hash}.pos')
     if os.path.exists(position_file):
         with open(position_file, 'r') as f:
             return int(f.read())
     else:
         return 0
 
-def set_last_read_position(log_file, position):
+def set_last_read_position(log_file, position, keyword):
     args = parse_args()
     severity_param = args.severity
-    position_file = os.path.join(TMP_DIR, f'{os.path.basename(log_file)}.{severity_param}.pos')
+    keyword_hash = hashlib.md5(keyword.encode('utf-8')).hexdigest()
+    position_file = os.path.join(TMP_DIR, f'{os.path.basename(log_file)}.{severity_param}.{keyword_hash}.pos')
     with open(position_file, 'w') as f:
         f.write(str(position))
 
@@ -39,7 +42,7 @@ def monitor_logs(filetag, log_file, keyword, severity):
     severity = severity.upper()
     if not os.path.exists(TMP_DIR):
         os.makedirs(TMP_DIR)
-    last_read_position = get_last_read_position(log_file)
+    last_read_position = get_last_read_position(log_file, keyword)
     keyword_found = False
     with open(log_file, 'r') as f:
         if last_read_position > os.path.getsize(log_file):
@@ -49,7 +52,7 @@ def monitor_logs(filetag, log_file, keyword, severity):
             if re.search(keyword, line):
                 print(f'PROBLEM:{severity}:{filetag}:Keyword "{keyword}" found in {log_file}: {line}', end='')
                 keyword_found = True
-        set_last_read_position(log_file, f.tell())
+        set_last_read_position(log_file, f.tell(), keyword)
     if not keyword_found:
         print('OK')
 
