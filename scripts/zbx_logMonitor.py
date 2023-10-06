@@ -7,16 +7,22 @@
 import os
 import re
 import hashlib
+import argparse
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 CONFIG_FILE = os.path.join(SCRIPT_DIR, 'zbx_logMonitor.conf')
 TMP_DIR = os.path.join(SCRIPT_DIR, 'tmp')
 
 def parse_args():
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-s', '--severity', default='INFO', help='severity')
-    return parser.parse_args()
+    parser = argparse.ArgumentParser(description='This script monitors logs for specified keywords.')
+    parser.add_argument('-s', '--severity', required=True, help='Set the severity level for checking.')
+    args = parser.parse_args()
+
+    if not args.severity:
+        parser.print_help()
+        exit()
+
+    return args
 
 def get_last_read_position(log_file, keyword):
     args = parse_args()
