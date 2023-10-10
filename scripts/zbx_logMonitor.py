@@ -56,7 +56,7 @@ def monitor_logs(filetag, log_file, keyword, severity):
         f.seek(last_read_position)
         for line in f:
             if re.search(keyword, line):
-                result = filetag + ":" + keyword + " found in " + log_file + ": " + line.rstrip()
+                result = filetag + ":" + keyword + " found in " + log_file + ": " + line.rstrip("\n")
                 keyword_found = True
         set_last_read_position(log_file, f.tell(), keyword)
 
