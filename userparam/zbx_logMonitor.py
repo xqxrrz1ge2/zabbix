@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import json
 
 file_path = "/etc/zabbix/scripts/zbx_logMonitor.conf"
@@ -13,10 +15,10 @@ with open(file_path, 'r') as file:
         if len(parts) == 4:
             tag, path, keyword, level = parts
             entry = {
-                'tag': tag,
-                'path': path,
-                'keyword': keyword,
-                'level': level
+                '{#TAG}': tag,
+                '{#PATH}': path,
+                '{#KEYWORD}': keyword,
+                '{#SEVERITY}': level
             }
             result.append(entry)
 
