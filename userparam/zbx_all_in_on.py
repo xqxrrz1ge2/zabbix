@@ -46,7 +46,7 @@ def parse_config_log():
                     "{#TAG}": tag,
                     "{#PATH}": path,
                     "{#KEYWORD}": keyword,
-                    "{#LEVEL}": level.upper()
+                    "{#SEVERITY}": level.upper()
                 }
                 result.append(entry)
 
@@ -89,7 +89,7 @@ def parse_config_process():
 def main():
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('-t', '--conf_type', help="config type: log or process")
+    parser.add_argument('-t', '--conf_type', required=True, help="config type: log or process")
     args = parser.parse_args()
 
     if args.conf_type == 'log':
@@ -97,8 +97,8 @@ def main():
     elif args.conf_type == 'process':
         parse_config_process()
     else:
-        print("config type error")
-
+        parser.print_help()
+        exit(1)
 
 if __name__ == '__main__':
     main()
