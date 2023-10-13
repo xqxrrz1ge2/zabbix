@@ -18,7 +18,7 @@ with open(file_path, 'r') as file:
                 '{#TAG}': tag,
                 '{#PATH}': path,
                 '{#KEYWORD}': keyword,
-                '{#SEVERITY}': level
+                '{#SEVERITY}': level.upper()
             }
             result.append(entry)
 
