@@ -5,8 +5,8 @@ Requirements:
 
 ####
 Steps:
-1. Run zbx_all_in_on.py -t log 
-2. Run zbx_all_in_on.py -t process
+1. Run zbx_all_in_one.py -t log 
+2. Run zbx_all_in_one.py -t process
 3. Add user params config file in dir /etc/zabbix/zabbix_agent2.d or /etc/zabbix/zabbix_agent.d:
 4. Create userparams.conf:
     touch userparams.conf
@@ -14,3 +14,8 @@ Steps:
     UserParameter=logmondiscover,/etc/zabbix/scripts/zbx_all_in_on.py -t log
     UserParameter=processmondiscover,/etc/zabbix/scripts/zbx_all_in_on.py -t process
 6. Restart agent using systemctl restart zabbix-agent or systemctl restart zabbix-agent2
+
+
+####
+On UNIX Platform, please use shell script instead
+Commands are `zbx_all_in_one.sh log` or `zbx_all_in_one.sh process`
