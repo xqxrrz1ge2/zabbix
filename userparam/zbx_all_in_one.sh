@@ -31,7 +31,7 @@ function parse_config_log {
             result+=("{\"{#TAG}\":\"$tag\",\"{#PATH}\":\"$path\",\"{#KEYWORD}\":\"$keyword\",\"{#SEVERITY}\":\"${level^^}\"}")
         fi
     done < $file_path
-    echo -n "[${result[*]}]"
+    IFS=','; echo -n "[${result[*]}]"
 }
 
 function parse_config_process {
@@ -47,7 +47,7 @@ function parse_config_process {
             result+=("{\"{#TAG}\":\"$tag\",\"{#PROCESS}\":\"$process\",\"{#USER}\":\"$user\",\"{#COUNT}\":\"$count\",\"{#SEVERITY}\":\"${level^^}\"}")
         fi
     done < $file_path
-    echo -n "[${result[*]}]"
+    IFS=','; echo -n "[${result[*]}]"
 }
 
 function main {
