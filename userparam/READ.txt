@@ -19,3 +19,11 @@ Steps:
 ####
 On UNIX Platform, please use shell script instead
 Commands are `zbx_all_in_one.sh log` or `zbx_all_in_one.sh process`
+
+1. Copy script into /etc/zabbix/scripts
+2. Create userparams.conf:
+    touch userparams.conf
+3. Add lines to this file:
+    UserParameter=logmondiscover,/etc/zabbix/scripts/zbx_all_in_on.sh log
+    UserParameter=processmondiscover,/etc/zabbix/scripts/zbx_all_in_on.sh process
+4. Restart agent using systemctl restart zabbix-agent or systemctl restart zabbix-agent2
