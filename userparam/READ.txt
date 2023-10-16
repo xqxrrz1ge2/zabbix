@@ -20,7 +20,7 @@ Steps:
 On UNIX Platform, please use shell script instead
 Commands are `zbx_all_in_one.sh log` or `zbx_all_in_one.sh process`
 
-1. Copy script into /etc/zabbix/scripts
+1. Create directory /etc/zabbix/scripts
 2. Add user params config file in dir /etc/zabbix/zabbix_agent2.d or /etc/zabbix/zabbix_agent.d:
 3. Create userparams.conf:
     touch userparams.conf
