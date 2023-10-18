@@ -50,13 +50,31 @@ function parse_config_process {
     IFS=','; echo -n "[${result[*]}]"
 }
 
+#add function for parse tcp port config
+function parse_config_tcpport {
+    local scripts_dir=$(check_dir)
+    local file_path="$scripts_dir/zbx_tcpportMonitor.conf"
+    if [[ ! -f $file_path ]]; then
+        echo "#tag;hostname;port;severity" > $file_path
+    fi
+    local result=()
+    while IFS=';' read -r tag hostname port level; do
+        if [[ -n $tag ]] && [[ $tag != \#* ]]; then
+            result+=("{\"{#TAG}\":\"$tag\",\"{#HOSTNAME}\":\"$hostname\",\"{#PORT}\":\"$port\",\"{#SEVERITY}\":\"${level^^}\"}")
+        fi
+    done < $file_path
+    IFS=','; echo -n "[${result[*]}]"
+}
+
 function main {
     if [[ $1 == 'log' ]]; then
         parse_config_log
     elif [[ $1 == 'process' ]]; then
         parse_config_process
+    elif [[ $1 == 'tcpport' ]]; then
+        parse_config_tcpport
     else
-        echo "Usage: $0 log|process"
+        echo "Usage: $0 log|process|tcpport"
         exit 1
     fi
 }
