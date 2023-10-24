@@ -4,27 +4,30 @@ Requirements:
 2. OS Linux or Windows
 
 ####
+On Windows Platform, use python 3 and zbx_all_in_one.py
 Steps:
-1. Run zbx_all_in_one.py -t log 
-2. Run zbx_all_in_one.py -t process
+1. Create C:\zabbix\scripts
+2. Download embed python to this folder, link https://www.python.org/ftp/python/3.11.4/python-3.11.4-embed-amd64.zip
+3. Exact files to folder: C:\zabbix\scripts\python, you should find python.exe in this folder
+4. Get zbx_all_in_one.py into C:\zabbix\scripts
+5. Add user params config file in folder C:\zabbix\zabbix_agent2.d:
+6. Create userparams.conf
+5. Add lines to this file:
+    UserParameter=logmondiscover,C:\zabbix\scripts\python\python.exe C:\zabbix\scripts\zbx_all_in_one.py -t log
+    UserParameter=processmondiscover,C:\zabbix\scripts\python\python.exe C:\zabbix\scripts\zbx_all_in_one.py -t process
+7. Restart agent through Windows Service Manager
+
+
+####
+On UNIX or Linux Platform, please use shell script instead
+Commands are `zbx_all_in_one.sh log` or `zbx_all_in_one.sh process`
+
+1. Create directory /etc/zabbix/scripts
+2. Get zbx_all_in_one.sh into /etc/zabbix/scripts
 3. Add user params config file in dir /etc/zabbix/zabbix_agent2.d or /etc/zabbix/zabbix_agent.d:
 4. Create userparams.conf:
     touch userparams.conf
 5. Add lines to this file:
-    UserParameter=logmondiscover,/etc/zabbix/scripts/zbx_all_in_one.py -t log
-    UserParameter=processmondiscover,/etc/zabbix/scripts/zbx_all_in_one.py -t process
-6. Restart agent using systemctl restart zabbix-agent or systemctl restart zabbix-agent2
-
-
-####
-On UNIX Platform, please use shell script instead
-Commands are `zbx_all_in_one.sh log` or `zbx_all_in_one.sh process`
-
-1. Create directory /etc/zabbix/scripts
-2. Add user params config file in dir /etc/zabbix/zabbix_agent2.d or /etc/zabbix/zabbix_agent.d:
-3. Create userparams.conf:
-    touch userparams.conf
-4. Add lines to this file:
     UserParameter=logmondiscover,/etc/zabbix/scripts/zbx_all_in_one.sh log
     UserParameter=processmondiscover,/etc/zabbix/scripts/zbx_all_in_one.sh process
-5. Restart agent using systemctl restart zabbix-agent or systemctl restart zabbix-agent2
+6. Restart agent using systemctl restart zabbix-agent or systemctl restart zabbix-agent2
