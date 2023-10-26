@@ -81,6 +81,33 @@ def parse_config_process():
 
     print(json_data, end="")
 
+#parse windows service monitor config file
+def parse_config_service():
+    scripts_dir = check_dir()
+    result = []
+    file_path = scripts_dir + "zbx_serviceMonitor.conf"
+    #check whether the file exists, create it if not
+    if not os.path.exists(file_path):
+        with open(file_path, 'w') as file:
+            file.write("#tag;service;severity")
+    with open(file_path, 'r') as f:
+        for line in f:
+            if not line.strip() or line.strip().startswith("#"):
+                continue
+
+            parts = line.strip().split(';')
+            tag, service, level = parts
+            entry = {
+                '{#TAG}': tag,
+                '{#SERVICE}': service,
+                '{#SEVERITY}': level.upper()
+            }
+            result.append(entry)
+
+    json_data = json.dumps(result, indent=5)
+
+    print(json_data, end="")
+
 #add arguments support
 def main():
     import argparse
