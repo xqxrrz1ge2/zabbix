@@ -46,7 +46,7 @@ def parse_config_log():
                 }
                 result.append(entry)
 
-    json_data = json.dumps(result, indent=4)
+    json_data = json.dumps(result)
     print(json_data, end="")
 
 
@@ -77,7 +77,7 @@ def parse_config_process():
             }
             result.append(entry)
 
-    json_data = json.dumps(result, indent=5)
+    json_data = json.dumps(result)
 
     print(json_data, end="")
 
@@ -104,7 +104,7 @@ def parse_config_service():
             }
             result.append(entry)
 
-    json_data = json.dumps(result, indent=5)
+    json_data = json.dumps(result)
 
     print(json_data, end="")
 
