@@ -112,13 +112,15 @@ def parse_config_service():
 def main():
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('-t', '--conf_type', required=True, help="config type: log or process")
+    parser.add_argument('-t', '--conf_type', required=True, help="config type: log or process or service(windows)")
     args = parser.parse_args()
 
     if args.conf_type == 'log':
         parse_config_log()
     elif args.conf_type == 'process':
         parse_config_process()
+    elif args.conf_type == 'service':
+        parse_config_service()
     else:
         parser.print_help()
         exit(1)
