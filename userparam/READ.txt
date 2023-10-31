@@ -2,6 +2,16 @@
 Requirements: 
 1. Python 3
 2. OS Linux or Windows
+3. Runnig agent as root
+To override the default user and group for Zabbix agent, run:
+    systemctl edit zabbix-agent or systemctl edit zabbix-agent2
+Add the following content:
+    [Service]
+    User=root
+    Group=root
+Reload daemons and restart the zabbix-agent service:
+    systemctl daemon-reload
+    systemctl restart zabbix-agent
 
 ####
 On Windows Platform, use python 3 and zbx_all_in_one.py
