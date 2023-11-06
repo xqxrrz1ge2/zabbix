@@ -7,7 +7,7 @@ function check_os {
 function check_dir {
     local os_type=$(check_os)
     local dir
-    if [[ $os_type == 'LINUX' ]] || [[ $os_type == 'UNIX' ]]; then
+    if [[ $os_type == 'LINUX' ]] || [[ $os_type == 'AIX' ]] || [[ $os_type == 'SUNOS' ]]; then
         dir="/etc/zabbix/scripts"
     else
         echo "Unsupported OS type: $os_type"
