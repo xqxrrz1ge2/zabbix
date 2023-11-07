@@ -108,11 +108,41 @@ def parse_config_service():
 
     print(json_data, end="")
 
+#parse windows eventlog monitor config file
+def parse_config_eventlog():
+    scripts_dir = check_dir()
+    result = []
+    file_path = scripts_dir + "zbx_eventlogMonitor.conf"
+    #check whether the file exists, create it if not
+    if not os.path.exists(file_path):
+        with open(file_path, 'w') as file:
+            file.write("#tag;logfile;keyword;level;source;eventid")
+    with open(file_path, 'r') as f:
+        for line in f:
+            if not line.strip() or line.strip().startswith("#"):
+                continue
+
+            parts = line.strip().split(';')
+            tag, logfile, keyword, level, source, eventid = parts
+            entry = {
+                '{#TAG}': tag,
+                '{#LOGFILE}': logfile, #Application, System, Security
+                '{#KEYWORD}': keyword,
+                '{#LEVEL}': level.upper(), #Error, Warning, Critical, Information, SuccessAudit, FailureAudit
+                '{#SOURCE}': source, #source of eventlog, found in xml
+                '{#EVENTID}': eventid
+            }
+            result.append(entry)
+
+    json_data = json.dumps(result)
+
+    print(json_data, end="")
+
 #add arguments support
 def main():
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('-t', '--conf_type', required=True, help="config type: log or process or service(windows)")
+    parser.add_argument('-t', '--conf_type', required=True, help="config type: log or process or service(windows) or eventlog(windows)")
     args = parser.parse_args()
 
     if args.conf_type == 'log':
@@ -121,6 +151,8 @@ def main():
         parse_config_process()
     elif args.conf_type == 'service':
         parse_config_service()
+    elif args.conf_type == 'eventlog':
+        parse_config_eventlog()
     else:
         parser.print_help()
         exit(1)
