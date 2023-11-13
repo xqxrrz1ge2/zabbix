@@ -42,4 +42,5 @@ Commands are `zbx_all_in_one.sh log` or `zbx_all_in_one.sh process`
 5. Add lines to this file:
     UserParameter=logmondiscover,/etc/zabbix/scripts/zbx_all_in_one.sh log
     UserParameter=processmondiscover,/etc/zabbix/scripts/zbx_all_in_one.sh process
+    UserParameter=tcpportmondiscover,/etc/zabbix/scripts/zbx_all_in_one.sh tcpport
 6. Restart agent using systemctl restart zabbix-agent or systemctl restart zabbix-agent2
