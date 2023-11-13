@@ -26,6 +26,7 @@ Steps:
     UserParameter=logmondiscover,C:\zabbix\scripts\python\python.exe C:\zabbix\scripts\zbx_all_in_one.py -t log
     UserParameter=processmondiscover,C:\zabbix\scripts\python\python.exe C:\zabbix\scripts\zbx_all_in_one.py -t process
     UserParameter=servicemondiscover,C:\zabbix\scripts\python\python.exe C:\zabbix\scripts\zbx_all_in_one.py -t service
+    UserParameter=eventlogmondiscover,C:\zabbix\scripts\python\python.exe C:\zabbix\scripts\zbx_all_in_one.py -t eventlog
 7. Restart agent through Windows Service Manager
 
 
