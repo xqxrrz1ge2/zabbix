@@ -116,21 +116,22 @@ def parse_config_eventlog():
     #check whether the file exists, create it if not
     if not os.path.exists(file_path):
         with open(file_path, 'w') as file:
-            file.write("#tag;logfile;keyword;level;source;eventid")
+            file.write("#tag;logfile;keyword;level;source;eventid;severity")
     with open(file_path, 'r') as f:
         for line in f:
             if not line.strip() or line.strip().startswith("#"):
                 continue
 
             parts = line.strip().split(';')
-            tag, logfile, keyword, level, source, eventid = parts
+            tag, logfile, keyword, level, source, eventid, severity = parts
             entry = {
                 '{#TAG}': tag,
                 '{#LOGFILE}': logfile, #Application, System, Security
                 '{#KEYWORD}': keyword,
                 '{#LEVEL}': level.upper(), #Error, Warning, Critical, Information, SuccessAudit, FailureAudit
                 '{#SOURCE}': source, #source of eventlog, found in xml
-                '{#EVENTID}': eventid
+                '{#EVENTID}': eventid,
+                '{#SEVERITY}': severity.upper() #warning, critical, fatal
             }
             result.append(entry)
 
