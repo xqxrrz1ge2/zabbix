@@ -116,6 +116,9 @@ def parse_config_eventlog():
     #check whether the file exists, create it if not
     if not os.path.exists(file_path):
         with open(file_path, 'w') as file:
+            file.write("#logfile: Application, System, Security")
+            file.write("#level: Error, Warning, Critical, Information, SuccessAudit, FailureAudit")
+            file.write("#severity: warning, critical, fatal")
             file.write("#tag;logfile;keyword;level;source;eventid;severity")
     with open(file_path, 'r') as f:
         for line in f:
