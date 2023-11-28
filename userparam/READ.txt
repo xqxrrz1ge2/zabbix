@@ -20,7 +20,7 @@ Steps:
 2. Download embed python to this folder, link https://www.python.org/ftp/python/3.11.4/python-3.11.4-embed-amd64.zip
 3. Exact files to folder: C:\zabbix\scripts\python, you should find python.exe in this folder
 4. Get zbx_all_in_one.py into C:\zabbix\scripts
-5. Add user params config file in folder C:\zabbix\zabbix_agent2.d:
+5. Add user params config file in folder C:\zabbix\conf\zabbix_agent2.d:
 6. Create userparams.conf
 5. Add lines to this file:
     UserParameter=logmondiscover,C:\zabbix\scripts\python\python.exe C:\zabbix\scripts\zbx_all_in_one.py -t log
