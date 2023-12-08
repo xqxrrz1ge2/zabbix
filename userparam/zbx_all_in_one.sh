@@ -45,7 +45,8 @@ function parse_config_process {
         if [[ -n $tag ]] && [[ $tag != \#* ]]; then
             [[ $user == '-' ]] && user=''
             #need to simplify process name, remove path and args
-            process=$(echo $process | awk -F'/' '{print $NF}' | awk -F' ' '{print $1}')
+            #temporarily disable this
+            #process=$(echo $process | awk -F'/' '{print $NF}' | awk -F' ' '{print $1}')
             result+=("{\"{#TAG}\":\"$tag\",\"{#PROCESS}\":\"$process\",\"{#USER}\":\"$user\",\"{#COUNT}\":\"$count\",\"{#SEVERITY}\":\"${level^^}\"}")
         fi
     done < $file_path
