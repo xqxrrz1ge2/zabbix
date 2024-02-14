@@ -2,8 +2,8 @@
 
 #check $2 is empty or not
 if [ -z $2 ]; then
-    severity_param=$2; else
-    severity_param="INFO"
+    severity_param="INFO"; else
+    severity_param=$2
 fi
 
 function check_os {
