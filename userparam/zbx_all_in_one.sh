@@ -1,11 +1,5 @@
 #!/bin/bash
 
-#check $2 is empty or not
-if [ -z $2 ]; then
-    severity_param="INFO"; else
-    severity_param=$2
-fi
-
 function check_os {
     uname | tr '[:lower:]' '[:upper:]'
 }
@@ -34,7 +28,7 @@ function parse_config_log {
     local result=()
     while IFS=';' read -r tag path keyword level; do
         #check severity_param match with severity in config file
-        if [[ -n $tag ]] && [[ $tag != \#* ]] && [[ "${severity_param^^}" == "${level^^}" ]]; then
+        if [[ -n $tag ]] && [[ $tag != \#* ]]; then
             result+=("{\"{#TAG}\":\"$tag\",\"{#PATH}\":\"$path\",\"{#KEYWORD}\":\"$keyword\",\"{#SEVERITY}\":\"${level^^}\"}")
         fi
     done < $file_path
@@ -49,7 +43,7 @@ function parse_config_process {
     fi
     local result=()
     while IFS=';' read -r tag process user count level; do
-        if [[ -n $tag ]] && [[ $tag != \#* ]] && [[ "${severity_param^^}" == "${level^^}" ]]; then
+        if [[ -n $tag ]] && [[ $tag != \#* ]]; then
             [[ $user == '-' ]] && user=''
             #need to simplify process name, remove path and args
             #temporarily disable this
@@ -69,7 +63,7 @@ function parse_config_tcpport {
     fi
     local result=()
     while IFS=';' read -r tag hostname port level; do
-        if [[ -n $tag ]] && [[ $tag != \#* ]] && [[ "${severity_param^^}" == "${level^^}" ]]; then
+        if [[ -n $tag ]] && [[ $tag != \#* ]]; then
             result+=("{\"{#TAG}\":\"$tag\",\"{#HOSTNAME}\":\"$hostname\",\"{#PORT}\":\"$port\",\"{#SEVERITY}\":\"${level^^}\"}")
         fi
     done < $file_path

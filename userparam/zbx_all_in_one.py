@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#/usr/bin/python
 
 import os
 import json
@@ -22,7 +22,7 @@ def check_dir():
         return "C:\\zabbix\\scripts\\"
 
 #parse log monitor config file
-def parse_config_log(severityparam):
+def parse_config_log():
     scripts_dir = check_dir()
     result = []
     file_path = scripts_dir + "zbx_logMonitor.conf"
@@ -38,20 +38,20 @@ def parse_config_log(severityparam):
             parts = line.strip().split(';')
             if len(parts) == 4:
                 tag, path, keyword, level = parts
-                if level.upper() == severityparam.upper():
-                    entry = {
-                        "{#TAG}": tag,
-                        "{#PATH}": path,
-                        "{#KEYWORD}": keyword,
-                        "{#SEVERITY}": level.upper()
-                    }
-                    result.append(entry)
+                entry = {
+                    "{#TAG}": tag,
+                    "{#PATH}": path,
+                    "{#KEYWORD}": keyword,
+                    "{#SEVERITY}": level.upper()
+                }
+                result.append(entry)
+
     json_data = json.dumps(result)
     print(json_data, end="")
 
 
 #parse process monitor config file
-def parse_config_process(severityparam):
+def parse_config_process():
     scripts_dir = check_dir()
     result = []
     file_path = scripts_dir + "zbx_processMonitor.conf"
@@ -68,20 +68,21 @@ def parse_config_process(severityparam):
             tag, process, user, count, level = parts
             if user == '-':
                 user = ''
-            if level.upper() == severityparam.upper():                
-                entry = {
-                    '{#TAG}': tag,
-                    '{#PROCESS}': process,
-                    '{#USER}': user,
-                    '{#COUNT}': count,
-                    '{#SEVERITY}': level.upper()
-                }
-                result.append(entry)
+            entry = {
+                '{#TAG}': tag,
+                '{#PROCESS}': process,
+                '{#USER}': user,
+                '{#COUNT}': count,
+                '{#SEVERITY}': level.upper()
+            }
+            result.append(entry)
+
     json_data = json.dumps(result)
+
     print(json_data, end="")
 
 #parse windows service monitor config file
-def parse_config_service(severityparam):
+def parse_config_service():
     scripts_dir = check_dir()
     result = []
     file_path = scripts_dir + "zbx_serviceMonitor.conf"
@@ -96,18 +97,19 @@ def parse_config_service(severityparam):
 
             parts = line.strip().split(';')
             tag, service, level = parts
-            if level.upper() == severityparam.upper():
-                entry = {
-                    '{#TAG}': tag,
-                    '{#SERVICE}': service,
-                    '{#SEVERITY}': level.upper()
-                }
-                result.append(entry)
+            entry = {
+                '{#TAG}': tag,
+                '{#SERVICE}': service,
+                '{#SEVERITY}': level.upper()
+            }
+            result.append(entry)
+
     json_data = json.dumps(result)
+
     print(json_data, end="")
 
 #parse windows eventlog monitor config file
-def parse_config_eventlog(severityparam):
+def parse_config_eventlog():
     scripts_dir = check_dir()
     result = []
     file_path = scripts_dir + "zbx_eventlogMonitor.conf"
@@ -125,18 +127,19 @@ def parse_config_eventlog(severityparam):
 
             parts = line.strip().split(';')
             tag, logfile, keyword, level, source, eventid, severity = parts
-            if severity.upper() == severityparam.upper():
-                entry = {
-                    '{#TAG}': tag,
-                    '{#LOGFILE}': logfile, #Application, System, Security
-                    '{#KEYWORD}': keyword,
-                    '{#LEVEL}': level.upper(), #Error, Warning, Critical, Information, SuccessAudit, FailureAudit
-                    '{#SOURCE}': source, #source of eventlog, found in xml
-                    '{#EVENTID}': eventid,
-                    '{#SEVERITY}': severity.upper() #warning, critical, fatal
-                }
-                result.append(entry)
+            entry = {
+                '{#TAG}': tag,
+                '{#LOGFILE}': logfile, #Application, System, Security
+                '{#KEYWORD}': keyword,
+                '{#LEVEL}': level.upper(), #Error, Warning, Critical, Information, SuccessAudit, FailureAudit
+                '{#SOURCE}': source, #source of eventlog, found in xml
+                '{#EVENTID}': eventid,
+                '{#SEVERITY}': severity.upper() #warning, critical, fatal
+            }
+            result.append(entry)
+
     json_data = json.dumps(result)
+
     print(json_data, end="")
 
 #add arguments support
@@ -144,17 +147,16 @@ def main():
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('-t', '--conf_type', required=True, help="config type: log or process or service(windows) or eventlog(windows)")
-    parser.add_argument('-s', '--severity', required=True, help="severity level")
     args = parser.parse_args()
 
     if args.conf_type == 'log':
-        parse_config_log(args.severity)
+        parse_config_log()
     elif args.conf_type == 'process':
-        parse_config_process(args.severity)
+        parse_config_process()
     elif args.conf_type == 'service':
-        parse_config_service(args.severity)
+        parse_config_service()
     elif args.conf_type == 'eventlog':
-        parse_config_eventlog(args.severity)
+        parse_config_eventlog()
     else:
         parser.print_help()
         exit(1)
