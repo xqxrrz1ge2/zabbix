@@ -2,6 +2,7 @@
 
 import os
 import json
+import re
 
 #check running OS type, return 'Linux' or 'Windows' or 'UNIX'
 def check_os():
@@ -29,22 +30,30 @@ def parse_config_log():
     #check whether the file exists, create it if not
     if not os.path.exists(file_path):
         with open(file_path, 'w') as file:
-            file.write("#tag;path;keyword;severity")
+            file.write("#tag;path;regex_filename;keyword;severity")
     with open(file_path, 'r') as f:
         for line in f:
             if not line.strip() or line.strip().startswith("#"):
                 continue
 
             parts = line.strip().split(';')
-            if len(parts) == 4:
-                tag, path, keyword, level = parts
-                entry = {
-                    "{#TAG}": tag,
-                    "{#PATH}": path,
-                    "{#KEYWORD}": keyword,
-                    "{#SEVERITY}": level.upper()
-                }
-                result.append(entry)
+            if len(parts) == 5:
+                tag, path, filename, keyword, level = parts
+                #find all files which matches filename regex pattern in the path
+                files = []
+                filePattern = re.compile(filename)
+                for root, dirs, filenames in os.walk(path):
+                    for file in filenames:
+                        if filePattern.match(file):
+                            files.append(os.path.join(root, file))
+                for file in files:
+                    entry = {
+                        "{#TAG}": tag,
+                        "{#PATH}": file,
+                        "{#KEYWORD}": keyword,
+                        "{#SEVERITY}": level.upper()
+                    }
+                    result.append(entry)
 
     json_data = json.dumps(result)
     print(json_data, end="")

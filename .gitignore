@@ -1,3 +1,7 @@
+#for ITM GSMA CONF FILES
+gsma_transition/gsma_conf
+.DS_Store
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
