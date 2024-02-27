@@ -23,13 +23,18 @@ function parse_config_log {
     local scripts_dir=$(check_dir)
     local file_path="$scripts_dir/zbx_logMonitor.conf"
     if [[ ! -f $file_path ]]; then
-        echo "#tag;path;keyword;severity" > $file_path
+        echo "#tag;path;regex_filename;keyword;severity" > $file_path
     fi
     local result=()
-    while IFS=';' read -r tag path keyword level; do
-        #check severity_param match with severity in config file
+    while IFS=';' read -r tag path regex_filename keyword level; do
         if [[ -n $tag ]] && [[ $tag != \#* ]]; then
-            result+=("{\"{#TAG}\":\"$tag\",\"{#PATH}\":\"$path\",\"{#KEYWORD}\":\"$keyword\",\"{#SEVERITY}\":\"${level^^}\"}")
+            while IFS= read -r file; do
+                local filename=$(basename "$file")
+                echo "$filename" | grep -E "$regex_filename" > /dev/null
+                if [[ $? -eq 0 ]]; then
+                    result+=("{\"{#TAG}\":\"$tag\",\"{#PATH}\":\"$file\",\"{#KEYWORD}\":\"$keyword\",\"{#SEVERITY}\":\"${level^^}\"}")
+                fi
+            done < <(find "$path" -type f 2>/dev/null)
         fi
     done < $file_path
     IFS=','; echo -n "[${result[*]}]"
