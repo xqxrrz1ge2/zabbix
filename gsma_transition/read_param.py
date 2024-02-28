@@ -30,7 +30,8 @@ def save_params_to_zabbix(zbx_conf_file, gsma_params):
             file.write("#tag;path;regex_filename;keyword;severity")
             file.write(gsma_params)
     else:
-        file.write(gsma_params)
+        with open(file_path, 'w') as file:
+            file.write(gsma_params)
 
 def read_param_files(directory_path):
     """
