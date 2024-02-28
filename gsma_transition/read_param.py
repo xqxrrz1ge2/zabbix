@@ -97,8 +97,8 @@ def convert_gsma_param(directory_path):
         final_result.append(file_name)
         final_result.append(file_keyword)
         final_result.append(file_severity)
-
         zbx_logMonitor_lines = ";".join(final_result)
+        save_params_to_zabbix("zbx_logMonitor.conf", zbx_logMonitor_lines)
 
 
 if __name__ == "__main__":

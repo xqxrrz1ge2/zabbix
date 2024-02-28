@@ -117,6 +117,34 @@ def parse_config_service():
 
     print(json_data, end="")
 
+#parse windows tcp port monitor config file
+def parse_config_tcpport():
+    scripts_dir = check_dir()
+    result = []
+    file_path = scripts_dir + "zbx_tcpportMonitor.conf"
+    #check whether the file exists, create it if not
+    if not os.path.exists(file_path):
+        with open(file_path, 'w') as file:
+            file.write("#tag;hostname;port;severity")
+    with open(file_path, 'r') as f:
+        for line in f:
+            if not line.strip() or line.strip().startswith("#"):
+                continue
+
+            parts = line.strip().split(';')
+            tag, hostname, port, level = parts
+            entry = {
+                '{#TAG}': tag,
+                '{#HOSTNAME}': hostname,
+                '{#PORT}': port,
+                '{#SEVERITY}': level.upper()
+            }
+            result.append(entry)
+
+    json_data = json.dumps(result)
+
+    print(json_data, end="")
+
 #parse windows eventlog monitor config file
 def parse_config_eventlog():
     scripts_dir = check_dir()
