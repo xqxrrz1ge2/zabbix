@@ -78,72 +78,75 @@ def convert_gsma_param(directory_path):
     files_dict = {}
     logMonitor_contents_lists = file_contents_dict.get("LogMonitor.param")
     LogMonitor_detail_contents_lists = file_contents_dict.get("LogMonitor_detail.param")
-    for file_defines in logMonitor_contents_lists:
-        elements = file_defines.split(";")
-        file_alias = elements[0]
-        file_path = elements[1]
-        files_dict[file_alias] = file_path
-    #replace file alias in LogMonitor_detail.param with file path
-    for detail_line in LogMonitor_detail_contents_lists:
-        final_result = []
-        elements = detail_line.split(";")
-        file_tag = elements[0]
-        file_alias = elements[1]
-        file_keyword = elements[2]
-        file_severity = elements[3]
-        file_full_path = files_dict.get(file_alias)
-        file_dir, file_name = file_full_path.rsplit(os.sep, 1)
-        final_result.append(file_tag)
-        final_result.append(file_dir)
-        final_result.append(file_name)
-        final_result.append(file_keyword)
-        final_result.append(file_severity)
-        zbx_logMonitor_lines = ";".join(final_result)
-        save_params_to_zabbix("zbx_logMonitor.conf", zbx_logMonitor_lines)
+    if logMonitor_contents_lists is not None:
+        for file_defines in logMonitor_contents_lists:
+            elements = file_defines.split(";")
+            file_alias = elements[0]
+            file_path = elements[1]
+            files_dict[file_alias] = file_path
+        #replace file alias in LogMonitor_detail.param with file path
+        for detail_line in LogMonitor_detail_contents_lists:
+            final_result = []
+            elements = detail_line.split(";")
+            file_tag = elements[0]
+            file_alias = elements[1]
+            file_keyword = elements[2]
+            file_severity = elements[3]
+            file_full_path = files_dict.get(file_alias)
+            file_dir, file_name = file_full_path.rsplit(os.sep, 1)
+            final_result.append(file_tag)
+            final_result.append(file_dir)
+            final_result.append(file_name)
+            final_result.append(file_keyword)
+            final_result.append(file_severity)
+            zbx_logMonitor_lines = ";".join(final_result)
+            save_params_to_zabbix("zbx_logMonitor.conf", zbx_logMonitor_lines)
 
     #process.param processing
     process_contents_lists = file_contents_dict.get("process.param")
-    for items in process_contents_lists:
-        elements = items.split(";")
-        final_result = []
-        process_tag = elements[0] + "_" + elements[1]
-        process_name = elements[2]
-        process_user = elements[3]
-        process_count = elements[4]
-        process_severity = elements[7]
-        if process_severity == "W" or process_severity == "M":
-            process_severity = "WARNING"
-        elif process_severity == "C":
-            process_severity = "CRITICAL"
-        elif process_severity == "F":
-            process_severity = "FATAL"
-        final_result.append(process_tag)
-        final_result.append(process_name)
-        final_result.append(process_user)
-        final_result.append(process_count)
-        final_result.append(process_severity) 
-        zbx_processMonitor_lines = ";".join(final_result)
-        save_params_to_zabbix("zbx_processMonitor.conf", zbx_processMonitor_lines)
+    if process_contents_lists is not None:
+        for items in process_contents_lists:
+            elements = items.split(";")
+            final_result = []
+            process_tag = elements[0] + "_" + elements[1]
+            process_name = elements[2]
+            process_user = elements[3]
+            process_count = elements[4]
+            process_severity = elements[7]
+            if process_severity == "W" or process_severity == "M":
+                process_severity = "WARNING"
+            elif process_severity == "C":
+                process_severity = "CRITICAL"
+            elif process_severity == "F":
+                process_severity = "FATAL"
+            final_result.append(process_tag)
+            final_result.append(process_name)
+            final_result.append(process_user)
+            final_result.append(process_count)
+            final_result.append(process_severity) 
+            zbx_processMonitor_lines = ";".join(final_result)
+            save_params_to_zabbix("zbx_processMonitor.conf", zbx_processMonitor_lines)
 
     #network.param processing
     network_contents_lists = file_contents_dict.get("network.param")
-    for items in network_contents_lists:
-        elements = items.split(";")
-        final_result = []
-        network_tag = elements[0] + "_" + elements[1]
-        network_hostname = elements[2]
-        network_port = elements[3]
-        network_severity = elements[4]
-        final_result.append(network_tag)
-        final_result.append(network_hostname)
-        final_result.append(network_port)
-        final_result.append(network_severity)
-        zbx_networkMonitor_lines = ";".join(final_result)
-        save_params_to_zabbix("zbx_networkMonitor.conf", zbx_networkMonitor_lines)
+    if network_contents_lists is not None:
+        for items in network_contents_lists:
+            elements = items.split(";")
+            final_result = []
+            network_tag = elements[0] + "_" + elements[1]
+            network_hostname = elements[2]
+            network_port = elements[3]
+            network_severity = elements[4]
+            final_result.append(network_tag)
+            final_result.append(network_hostname)
+            final_result.append(network_port)
+            final_result.append(network_severity)
+            zbx_networkMonitor_lines = ";".join(final_result)
+            save_params_to_zabbix("zbx_networkMonitor.conf", zbx_networkMonitor_lines)
 
     #EventLog.param processing
     eventlog_contents_lists = file_contents_dict.get("EventLog.param")
-    if len(eventlog_contents_lists) > 0:
+    if eventlog_contents_lists is not None:
         for items in eventlog_contents_lists:
             elements = items.split(";")
             final_result = []
