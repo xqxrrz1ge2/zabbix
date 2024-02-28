@@ -100,6 +100,68 @@ def convert_gsma_param(directory_path):
         zbx_logMonitor_lines = ";".join(final_result)
         save_params_to_zabbix("zbx_logMonitor.conf", zbx_logMonitor_lines)
 
+    #process.param processing
+    process_contents_lists = file_contents_dict.get("process.param")
+    for items in process_contents_lists:
+        elements = items.split(";")
+        final_result = []
+        process_tag = elements[0] + "_" + elements[1]
+        process_name = elements[2]
+        process_user = elements[3]
+        process_count = elements[4]
+        process_severity = elements[7]
+        if process_severity == "W" or process_severity == "M":
+            process_severity = "WARNING"
+        elif process_severity == "C":
+            process_severity = "CRITICAL"
+        elif process_severity == "F":
+            process_severity = "FATAL"
+        final_result.append(process_tag)
+        final_result.append(process_name)
+        final_result.append(process_user)
+        final_result.append(process_count)
+        final_result.append(process_severity) 
+        zbx_processMonitor_lines = ";".join(final_result)
+        save_params_to_zabbix("zbx_processMonitor.conf", zbx_processMonitor_lines)
+
+    #network.param processing
+    network_contents_lists = file_contents_dict.get("network.param")
+    for items in network_contents_lists:
+        elements = items.split(";")
+        final_result = []
+        network_tag = elements[0] + "_" + elements[1]
+        network_hostname = elements[2]
+        network_port = elements[3]
+        network_severity = elements[4]
+        final_result.append(network_tag)
+        final_result.append(network_hostname)
+        final_result.append(network_port)
+        final_result.append(network_severity)
+        zbx_networkMonitor_lines = ";".join(final_result)
+        save_params_to_zabbix("zbx_networkMonitor.conf", zbx_networkMonitor_lines)
+
+    #EventLog.param processing
+    eventlog_contents_lists = file_contents_dict.get("EventLog.param")
+    if len(eventlog_contents_lists) > 0:
+        for items in eventlog_contents_lists:
+            elements = items.split(";")
+            final_result = []
+            eventlog_tag = elements[0]
+            eventlog_logfile = elements[1].replace("=", "")
+            eventlog_keyword = ""
+            eventlog_level = ""
+            eventlog_source = ""
+            eventlog_id = elements[4].replace("=", "")
+            eventlog_severity = elements[6]
+            final_result.append(eventlog_tag)
+            final_result.append(eventlog_logfile)
+            final_result.append(eventlog_keyword)
+            final_result.append(eventlog_level)
+            final_result.append(eventlog_source)
+            final_result.append(eventlog_id)
+            final_result.append(eventlog_severity)
+            zbx_eventLogMonitor_lines = ";".join(final_result)
+            save_params_to_zabbix("zbx_eventLogMonitor.conf", zbx_eventLogMonitor_lines)
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
