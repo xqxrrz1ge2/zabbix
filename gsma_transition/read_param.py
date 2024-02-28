@@ -76,6 +76,7 @@ def convert_gsma_param(directory_path):
     file_contents_dict = read_param_files(directory_path)
     #LogMonitor.param and LogMonitor_detail.param processing
     files_dict = {}
+    zbx_contents = ""
     logMonitor_contents_lists = file_contents_dict.get("LogMonitor.param")
     LogMonitor_detail_contents_lists = file_contents_dict.get("LogMonitor_detail.param")
     if logMonitor_contents_lists is not None:
@@ -99,8 +100,9 @@ def convert_gsma_param(directory_path):
             final_result.append(file_name)
             final_result.append(file_keyword)
             final_result.append(file_severity)
-            zbx_logMonitor_lines = ";".join(final_result)
-            save_params_to_zabbix("zbx_logMonitor.conf", zbx_logMonitor_lines)
+            zbx_contents = ";".join(final_result)
+            
+    save_params_to_zabbix("zbx_logMonitor.conf", zbx_contents)
 
     #process.param processing
     process_contents_lists = file_contents_dict.get("process.param")
@@ -124,8 +126,8 @@ def convert_gsma_param(directory_path):
             final_result.append(process_user)
             final_result.append(process_count)
             final_result.append(process_severity) 
-            zbx_processMonitor_lines = ";".join(final_result)
-            save_params_to_zabbix("zbx_processMonitor.conf", zbx_processMonitor_lines)
+            zbx_contents = ";".join(final_result)
+    save_params_to_zabbix("zbx_processMonitor.conf", zbx_contents)
 
     #network.param processing
     network_contents_lists = file_contents_dict.get("network.param")
@@ -141,8 +143,8 @@ def convert_gsma_param(directory_path):
             final_result.append(network_hostname)
             final_result.append(network_port)
             final_result.append(network_severity)
-            zbx_networkMonitor_lines = ";".join(final_result)
-            save_params_to_zabbix("zbx_networkMonitor.conf", zbx_networkMonitor_lines)
+            zbx_contents = ";".join(final_result)
+    save_params_to_zabbix("zbx_networkMonitor.conf", zbx_contents)
 
     #EventLog.param processing
     eventlog_contents_lists = file_contents_dict.get("EventLog.param")
@@ -164,8 +166,8 @@ def convert_gsma_param(directory_path):
             final_result.append(eventlog_source)
             final_result.append(eventlog_id)
             final_result.append(eventlog_severity)
-            zbx_eventLogMonitor_lines = ";".join(final_result)
-            save_params_to_zabbix("zbx_eventLogMonitor.conf", zbx_eventLogMonitor_lines)
+            zbx_contents = ";".join(final_result)
+    save_params_to_zabbix("zbx_eventLogMonitor.conf", zbx_contents)
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
