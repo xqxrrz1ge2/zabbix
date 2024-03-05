@@ -25,13 +25,8 @@ def save_params_to_zabbix(zbx_conf_file, gsma_params):
     scripts_dir = check_dir()
     file_path = scripts_dir + zbx_conf_file
     # Check whether the file exists, create it if not
-    if not os.path.exists(file_path):
-        with open(file_path, 'a') as file:
-            file.write("#tag;path;regex_filename;keyword;severity\n")
-            file.write(gsma_params + "\n")
-    else:
-        with open(file_path, 'a') as file:
-            file.write(gsma_params + "\n")
+    with open(file_path, 'a') as file:
+        file.write(gsma_params + "\n")
 
 def read_param_files(directory_path):
     """
