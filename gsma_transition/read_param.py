@@ -64,6 +64,7 @@ def read_param_files(directory_path):
                     file_contents_list.append(line.strip())
                     file_contents_dict[key_name] = file_contents_list
 
+    print(file_contents_dict)
     return file_contents_dict
 
 
@@ -145,16 +146,18 @@ def convert_gsma_param(directory_path):
             save_params_to_zabbix("zbx_networkMonitor.conf", '\n')
 
     #EventLog.param processing
+    #gsma format
+    #MonSol; Logfile; Type/Level; Source; EventCode; User; Severity
     eventlog_contents_lists = file_contents_dict.get("EventLog.param")
     if eventlog_contents_lists is not None:
-        for items in eventlog_contents_lists:
-            elements = items.split(";")
+        for item in eventlog_contents_lists:
+            elements = item.split(";")
             final_result = []
             eventlog_tag = elements[0]
             eventlog_logfile = elements[1].replace("=", "")
             eventlog_keyword = ""
-            eventlog_level = ""
-            eventlog_source = ""
+            eventlog_level = elements[2]
+            eventlog_source = elements[3].replace("=","")
             eventlog_id = elements[4].replace("=", "")
             eventlog_severity = elements[6]
             final_result.append(eventlog_tag)
