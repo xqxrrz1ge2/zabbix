@@ -30,7 +30,7 @@ def parse_config_log():
     #check whether the file exists, create it if not
     if not os.path.exists(file_path):
         with open(file_path, 'w') as file:
-            file.write("#tag;path;regex_filename;keyword;severity")
+            file.write("#tag;path;regex_filename;keyword;severity\n")
     with open(file_path, 'r') as f:
         for line in f:
             if not line.strip() or line.strip().startswith("#"):
@@ -67,7 +67,7 @@ def parse_config_process():
     #check whether the file exists, create it if not
     if not os.path.exists(file_path):
         with open(file_path, 'w') as file:
-            file.write("#tag;process;user;count;severity")
+            file.write("#tag;process;user;count;severity\n")
     with open(file_path, 'r') as f:
         for line in f:
             if not line.strip() or line.strip().startswith("#"):
@@ -98,7 +98,7 @@ def parse_config_service():
     #check whether the file exists, create it if not
     if not os.path.exists(file_path):
         with open(file_path, 'w') as file:
-            file.write("#tag;service;severity")
+            file.write("#tag;service;severity\n")
     with open(file_path, 'r') as f:
         for line in f:
             if not line.strip() or line.strip().startswith("#"):
@@ -125,7 +125,7 @@ def parse_config_tcpport():
     #check whether the file exists, create it if not
     if not os.path.exists(file_path):
         with open(file_path, 'w') as file:
-            file.write("#tag;hostname;port;severity")
+            file.write("#tag;hostname;port;severity\n")
     with open(file_path, 'r') as f:
         for line in f:
             if not line.strip() or line.strip().startswith("#"):
@@ -153,10 +153,10 @@ def parse_config_eventlog():
     #check whether the file exists, create it if not
     if not os.path.exists(file_path):
         with open(file_path, 'w') as file:
-            file.write("#logfile: Application, System, Security")
-            file.write("#level: Error, Warning, Critical, Information, SuccessAudit, FailureAudit")
-            file.write("#severity: warning, critical, fatal")
-            file.write("#tag;logfile;keyword;level;source;eventid;severity")
+            file.write("#logfile: Application, System, Security\n")
+            file.write("#level: Error, Warning, Critical, Information, SuccessAudit, FailureAudit\n")
+            file.write("#severity: warning, critical, fatal\n")
+            file.write("#tag;logfile;keyword;level;source;eventid;severity\n")
     with open(file_path, 'r') as f:
         for line in f:
             if not line.strip() or line.strip().startswith("#"):
