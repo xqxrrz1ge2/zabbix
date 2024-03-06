@@ -58,7 +58,8 @@ def read_param_files(directory_path):
         with open(file_path, 'r') as file:
             # Should skip lines start with "#"
             for line in file:
-                if not line.startswith("#"):
+                cleaned_line = line.strip()
+                if not cleaned_line.startswith("#") and cleaned_line:
                     file_contents_list.append(line.strip())
                     file_contents_dict[key_name] = file_contents_list
 
