@@ -125,8 +125,8 @@ def convert_gsma_param(directory_path):
             zbx_contents = ";".join(final_result)
             save_params_to_zabbix("zbx_processMonitor.conf", zbx_contents)
 
-    # Network.param processing
-    network_contents_lists = file_contents_dict.get("network.param")
+    # Networkport.param processing
+    network_contents_lists = file_contents_dict.get("networkport.param")
     if network_contents_lists is not None:
         for items in network_contents_lists:
             elements = items.split(";")
