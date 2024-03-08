@@ -19,6 +19,8 @@ def check_dir():
         if not os.path.isdir("C:\\zabbix\\scripts"):
             os.mkdir("C:\\zabbix\\scripts")
         return "C:\\zabbix\\scripts\\"
+    else:
+        return "/etc/zabbix/scripts/"
 
 # Parse log monitor config file
 def save_params_to_zabbix(zbx_conf_file, gsma_params):
