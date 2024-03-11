@@ -17,14 +17,6 @@ def check_dir():
     os.makedirs(zabbix_dir, exist_ok=True)
     return zabbix_dir
 
-#parse log monitor config file
-def save_params_to_zabbix(zbx_conf_file, gsma_params):
-    scripts_dir = check_dir()
-    file_path = scripts_dir + zbx_conf_file
-    #check whether the file exists, create it if not
-    with open(file_path, 'a') as file:
-        file.write(gsma_params)
-
 def read_param_files(directory_path):
     """
     Reads and displays the contents of all .param files in the specified directory.
