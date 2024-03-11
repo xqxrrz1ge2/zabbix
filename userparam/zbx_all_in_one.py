@@ -121,7 +121,7 @@ def parse_config_service():
 def parse_config_tcpport():
     scripts_dir = check_dir()
     result = []
-    file_path = scripts_dir + "zbx_tcpportMonitor.conf"
+    file_path = scripts_dir + "zbx_networkMonitor.conf"
     #check whether the file exists, create it if not
     if not os.path.exists(file_path):
         with open(file_path, 'w') as file:
