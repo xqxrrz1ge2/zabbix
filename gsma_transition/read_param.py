@@ -1,26 +1,21 @@
 import os
 import sys
 import re
+import platform
 
 #check running OS type, return 'Linux' or 'Windows' or 'UNIX'
 def check_os():
-    import platform
-    os_type = platform.system()
-    return os_type.upper()
+    return platform.system().upper()
 
 #check if /etc/zabbix/scripts exists, if not, create it
 def check_dir():
+    os_type = check_os()
     #check zabbix scripts dir exists according to OS type
-    if check_os() == 'LINUX' or check_os() == 'UNIX':
-        if not os.path.isdir("/etc/zabbix/scripts"):
-            os.mkdir("/etc/zabbix/scripts")
-        return "/etc/zabbix/scripts/"
-    elif check_os() == 'WINDOWS':
-        if not os.path.isdir("C:\\zabbix\\scripts"):
-            os.mkdir("C:\\zabbix\\scripts")
-        return "C:\\zabbix\\scripts\\"
-    else:
-        return "/etc/zabbix/scripts/" 
+    zabbix_dir = "/etc/zabbix/scripts/"
+    if os_type == 'WINDOWS':
+        zabbix_dir = "C:\\zabbix\\scripts\\"
+    os.makedirs(zabbix_dir, exist_ok=True)
+    return zabbix_dir
 
 #parse log monitor config file
 def save_params_to_zabbix(zbx_conf_file, gsma_params):
