@@ -62,7 +62,7 @@ function parse_config_process {
 #add function for parse tcp port config
 function parse_config_tcpport {
     local scripts_dir=$(check_dir)
-    local file_path="$scripts_dir/zbx_tcpportMonitor.conf"
+    local file_path="$scripts_dir/zbx_networkMonitor.conf"
     if [[ ! -f $file_path ]]; then
         echo "#tag;hostname;port;severity" > $file_path
     fi
