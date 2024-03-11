@@ -35,9 +35,6 @@ def read_param_files(directory_path):
     if not os.path.isdir(directory_path):
         print("The specified directory does not exist.")
         return
-
-    # Initialize an empty dictionary to hold the file contents
-    file_contents_dict = {}
     
     # List all files in the directory
     files = os.listdir(directory_path)
@@ -48,23 +45,26 @@ def read_param_files(directory_path):
     if not param_files:
         print("No .param files found in the directory.")
         return
-    
+
+    key_name_pattern = re.compile(r'^[Kk]\d{2}_')
+    # Initialize an empty dictionary to hold the file contents
+    file_contents_dict = {}
     # Read and display the contents of each .param file
     for file_name in param_files:
-        file_path = os.path.join(directory_path, file_name)
-        key_name = re.sub(r'^[Kk]\d{2}_', '', file_name)
-        file_contents_list = []
-        with open(file_path, 'r') as file:
-            #should skip lines start with "#"
-            for line in file:
-                cleaned_line = line.strip()
-                if not cleaned_line.startswith("#") and cleaned_line:
-                    file_contents_list.append(line.strip())
-                    file_contents_dict[key_name] = file_contents_list
+        key_name = key_name_pattern.sub('', file_name)
+        with open(os.path.join(directory_path, file_name), 'r') as file:
+            contents = [line.strip() for line in file if line.strip() and not line.startswith('#')]
+            if contents:
+                file_contents_dict[key_name] = contents
 
     print(file_contents_dict)
     return file_contents_dict
 
+def append_to_zabbix_confition_file(config_file, content):
+    scripts_dir = check_dir()
+    file_path = os.path.join(scripts_dir, config_file)
+    with open(file_path, 'a') as file:
+        file.write(content + '\n')
 
 def convert_gsma_param(directory_path):
     file_contents_dict = read_param_files(directory_path)
