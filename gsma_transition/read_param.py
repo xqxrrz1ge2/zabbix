@@ -98,12 +98,25 @@ def process_process_params(gsma_params_contents_dict):
         append_to_zabbix_configration_file("zbx_processMonitor.conf", final_result)
 
 def process_network_port_params(gsma_params_contents_dict):
-    network_contents_lists = gsma_params_contents_dict.get("networkport.param")
-    for items in network_contents_lists:
-        elements = items.split(";")
-        network_tag, network_hostname, network_port, network_severity = elements[0] + "_" + elements[1], elements[2], elements[3], elements[4]
-        final_result = ";".join([network_tag, network_hostname, network_port, network_severity])
-        append_to_zabbix_configration_file("zbx_networkMonitor.conf", final_result)
+    os_type = check_os()
+    param_file_name = "networkport.param"
+    if os_type == 'WINDOWS':
+        param_file_name = "PortCheck.param"
+        network_contents_lists = gsma_params_contents_dict.get(param_file_name)
+        for item in network_contents_lists:
+            #item format sample: mssql;ESMAPPP1;1433
+            elements = item.split(";")
+            network_tag, network_hostname, network_port = elements[0], elements[1], elements[2]
+            final_result = ";".join([network_tag, network_hostname, network_port, "CRITICAL"])
+            append_to_zabbix_configration_file("zbx_networkMonitor.conf", final_result)
+    else:
+        network_contents_lists = gsma_params_contents_dict.get(param_file_name)
+        for item in network_contents_lists:
+            #unix-like item format sample: oracle;;10.10.170.52;8020
+            elements = item.split(";")
+            network_tag, network_hostname, network_port = elements[0] + "_" + elements[1], elements[2], elements[3]
+            final_result = ";".join([network_tag, network_hostname, network_port, "CRITICAL"])
+            append_to_zabbix_configration_file("zbx_networkMonitor.conf", final_result)
 
 def process_event_log_params(gsma_params_contents_dict):
     eventlog_contents_lists = gsma_params_contents_dict.get("EventLog.param")
@@ -122,7 +135,7 @@ def convert_gsma_param(directory_path):
     if "process.param" in gsma_params_contents_dict:
         process_process_params(gsma_params_contents_dict)
 
-    if "networkport.param" in gsma_params_contents_dict:
+    if "networkport.param" in gsma_params_contents_dict or "PortCheck.param" in gsma_params_contents_dict:
         process_network_port_params(gsma_params_contents_dict)
     
     if "EventLog.param" in gsma_params_contents_dict:
