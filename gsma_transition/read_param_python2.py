@@ -65,6 +65,7 @@ def read_param_files(directory_path):
                     file_contents_list.append(line.strip())
                     file_contents_dict[key_name] = file_contents_list
 
+    print file_contents_dict
     return file_contents_dict
 
 def convert_gsma_param(directory_path):
