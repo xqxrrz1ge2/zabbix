@@ -95,13 +95,19 @@ def process_network_port_params(gsma_params_contents_dict):
     param_file_name = "networkport.param"
     if os_type == 'WINDOWS':
         param_file_name = "PortCheck.param"
-    network_contents_lists = gsma_params_contents_dict.get(param_file_name)
-    for item in network_contents_lists:
-        # item format sample: mssql;ESMAPPP1;1433
-        elements = item.split(";")
-        network_tag, network_hostname, network_port = elements[0], elements[1], elements[2]
-        final_result = ";".join([network_tag, network_hostname, network_port, "CRITICAL"])
-        append_to_zabbix_configration_file("zbx_networkMonitor.conf", final_result)
+        network_contents_lists = gsma_params_contents_dict.get(param_file_name)
+        for item in network_contents_lists:
+            # item format sample: mssql;ESMAPPP1;1433
+            elements = item.split(";")
+            network_tag, network_hostname, network_port = elements[0], elements[1], elements[2]
+    else:
+        network_contents_lists = gsma_params_contents_dict.get(param_file_name)
+        for item in network_contents_lists:
+            #unix-like item format sample: oracle;;10.10.170.52;8020
+            elements = item.split(";")
+            network_tag, network_hostname, network_port = elements[0] + "_" + elements[1], elements[2], elements[3]
+    final_result = ";".join([network_tag, network_hostname, network_port, "CRITICAL"])
+    append_to_zabbix_configration_file("zbx_networkMonitor.conf", final_result)
 
 def process_event_log_params(gsma_params_contents_dict):
     eventlog_contents_lists = gsma_params_contents_dict.get("EventLog.param")
