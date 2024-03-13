@@ -183,7 +183,7 @@ def parse_config_eventlog():
 def main():
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('-t', '--conf_type', required=True, help="config type: log or process or service(windows) or eventlog(windows)")
+    parser.add_argument('-t', '--conf_type', required=True, help="config type: log or process or tcpport or service(windows) or eventlog(windows)")
     args = parser.parse_args()
 
     if args.conf_type == 'log':
@@ -194,6 +194,8 @@ def main():
         parse_config_service()
     elif args.conf_type == 'eventlog':
         parse_config_eventlog()
+    elif args.conf_type == 'tcpport':
+        parse_config_tcpport()
     else:
         parser.print_help()
         exit(1)
