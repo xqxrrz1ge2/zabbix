@@ -12,15 +12,14 @@ def check_os():
 
 #check if /etc/zabbix/scripts exists, if not, create it
 def check_dir():
+    os_type = check_os()
     #check zabbix scripts dir exists according to OS type
-    if check_os() == 'LINUX' or check_os() == 'UNIX':
-        if not os.path.isdir("/etc/zabbix/scripts"):
-            os.mkdir("/etc/zabbix/scripts")
-        return "/etc/zabbix/scripts/"
-    elif check_os() == 'WINDOWS':
+    if check_os() == 'WINDOWS':
         if not os.path.isdir("C:\\zabbix\\scripts"):
             os.mkdir("C:\\zabbix\\scripts")
         return "C:\\zabbix\\scripts\\"
+    else:
+        return "/etc/zabbix/scripts/"
 
 #parse log monitor config file
 def parse_config_log():
