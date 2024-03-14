@@ -39,7 +39,7 @@ On UNIX or Linux Platform, please use python2 or python3
 4. Create userparams.conf:
     touch userparams.conf
 5. Add lines to this file:
-    #please use python3 or python3 accordingly
+    #please use python2 or python3 accordingly
     UserParameter=logmondiscover,python /etc/zabbix/scripts/zbx_all_in_one.py -t log
     UserParameter=processmondiscover,python /etc/zabbix/scripts/zbx_all_in_one.py -t process
     UserParameter=tcpportmondiscover,python /etc/zabbix/scripts/zbx_all_in_one.py -t tcpport
