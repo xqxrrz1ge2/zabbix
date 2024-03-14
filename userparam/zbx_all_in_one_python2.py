@@ -37,7 +37,7 @@ def parse_config(file_name, parser_function):
         for line in file:
             if not line.strip() or line.strip().startswith("#"):
                 continue
-            result.extend(parser_function(line))
+            result.extend(parser_function(file,line=line))
     
     print(json.dumps(result), end="")
 
