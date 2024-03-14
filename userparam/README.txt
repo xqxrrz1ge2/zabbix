@@ -31,8 +31,7 @@ Steps:
 
 
 ####
-On UNIX or Linux Platform, please use shell script instead
-Commands are `zbx_all_in_one.sh log` or `zbx_all_in_one.sh process`
+On UNIX or Linux Platform, please use python2 or python3
 
 1. Create directory /etc/zabbix/scripts
 2. Get zbx_all_in_one.sh into /etc/zabbix/scripts
@@ -40,7 +39,8 @@ Commands are `zbx_all_in_one.sh log` or `zbx_all_in_one.sh process`
 4. Create userparams.conf:
     touch userparams.conf
 5. Add lines to this file:
-    UserParameter=logmondiscover,/etc/zabbix/scripts/zbx_all_in_one.sh log
-    UserParameter=processmondiscover,/etc/zabbix/scripts/zbx_all_in_one.sh process
-    UserParameter=tcpportmondiscover,/etc/zabbix/scripts/zbx_all_in_one.sh tcpport
+    #please use python3 or python3 accordingly
+    UserParameter=logmondiscover,python /etc/zabbix/scripts/zbx_all_in_one.py -t log
+    UserParameter=processmondiscover,python /etc/zabbix/scripts/zbx_all_in_one.py -t process
+    UserParameter=tcpportmondiscover,python /etc/zabbix/scripts/zbx_all_in_one.py -t tcpport
 6. Restart agent using systemctl restart zabbix-agent or systemctl restart zabbix-agent2
