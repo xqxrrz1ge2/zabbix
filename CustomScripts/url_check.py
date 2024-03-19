@@ -3,6 +3,10 @@ from urllib.request import urlopen
 from urllib.error import URLError, HTTPError
 
 def check_url_status(url):
+    # 检查URL是否以http://或https://开头
+    if not (url.startswith("http://") or url.startswith("https://")):
+        print("Error: URL should start with 'http://' or 'https://'")
+        return
     try:
         response = urlopen(url)
         # 如果状态码是200，打印0；否则打印1
