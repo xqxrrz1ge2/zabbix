@@ -122,7 +122,7 @@ def process_custom_script_params(gsma_params_contents_dict):
     for item in customscript_contents_lists:
         elements = item.split(";")
         script_tag, script_full_name = elements[0], elements[1]
-        final_result = ";".join([script_tag, script_full_name])
+        final_result = ";".join([script_tag, script_full_name, "CRITICAL"])
         append_to_zabbix_configration_file("zbx_customScriptMonitor.conf", final_result)
 
 def convert_gsma_param(directory_path):
