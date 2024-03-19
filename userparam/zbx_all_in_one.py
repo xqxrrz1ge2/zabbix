@@ -178,11 +178,36 @@ def parse_config_eventlog():
 
     print(json_data, end="")
 
+def parse_config_customscript():
+    scripts_dir = check_dir()
+    result = []
+    file_path = scripts_dir + "zbx_customScriptMonitor.conf"
+    if not os.path.exists(file_path):
+        with open(file_path, 'w') as file:
+            file.write("#tag;command;severity\n")
+    with open(file_path, 'r') as f:
+        for line in f:
+            if not line.strip() or line.strip().startswith("#"):
+                continue
+
+            parts = line.strip().split(';')
+            tag, command, level = parts
+            entry = {
+                '{#TAG}': tag,
+                '{#COMMAND}': command,
+                '{#SEVERITY}': level.upper()
+            }
+            result.append(entry)
+
+    json_data = json.dumps(result)
+
+    print(json_data, end="")
+
 #add arguments support
 def main():
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('-t', '--conf_type', required=True, help="config type: log or process or tcpport or service(windows) or eventlog(windows)")
+    parser.add_argument('-t', '--conf_type', required=True, help="config type: log/process/tcpport/service(windows)/eventlog(windows)/customscript")
     args = parser.parse_args()
 
     if args.conf_type == 'log':
@@ -195,6 +220,8 @@ def main():
         parse_config_eventlog()
     elif args.conf_type == 'tcpport':
         parse_config_tcpport()
+    elif args.conf_type == 'customscript':
+        parse_config_customscript()
     else:
         parser.print_help()
         exit(1)

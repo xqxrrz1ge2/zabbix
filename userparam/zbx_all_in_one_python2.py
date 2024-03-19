@@ -143,9 +143,26 @@ def parser_tcpport(file, line=None, initialize=False):
         '{#SEVERITY}': level.upper()
     }]
 
+def parser_customscript(file, line=None, initialize=False):
+    """Parse custom script monitor configuration."""
+    if initialize:
+        file.write("#tag;script;severity\n")
+        return []
+    
+    parts = line.strip().split(';')
+    if len(parts) != 3:
+        return []
+    
+    tag, script, level = parts
+    return [{
+        '{#TAG}': tag,
+        '{#SCRIPT}': script,
+        '{#SEVERITY}': level.upper()
+    }]
+
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-t', '--conf_type', required=True, help="config type: log or process or tcpport or service(windows) or eventlog(windows)")
+    parser.add_argument('-t', '--conf_type', required=True, help="config type: log/process/tcpport/service(windows)/eventlog(windows)/customscript")
     args = parser.parse_args()
 
     parsers = {
@@ -154,6 +171,7 @@ def main():
         'service': ('zbx_serviceMonitor.conf', parser_service),
         'eventlog': ('zbx_eventlogMonitor.conf', parser_eventlog),
         'tcpport': ('zbx_networkMonitor.conf', parser_tcpport),
+        'customscript': ('zbx_customScriptMonitor.conf', parser_customscript),
     }
 
     if args.conf_type in parsers:
