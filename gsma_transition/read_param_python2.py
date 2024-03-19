@@ -117,6 +117,14 @@ def process_event_log_params(gsma_params_contents_dict):
         final_result = ";".join([eventlog_tag, eventlog_logfile, eventlog_keyword, eventlog_level, eventlog_source, eventlog_id, eventlog_severity])
         append_to_zabbix_configration_file("zbx_eventLogMonitor.conf", final_result)
 
+def process_custom_script_params(gsma_params_contents_dict):
+    customscript_contents_lists = gsma_params_contents_dict.get("CustomScript.param")
+    for item in customscript_contents_lists:
+        elements = item.split(";")
+        script_tag, script_full_name = elements[0], elements[1]
+        final_result = ";".join([script_tag, script_full_name])
+        append_to_zabbix_configration_file("zbx_customScriptMonitor.conf", final_result)
+
 def convert_gsma_param(directory_path):
     gsma_params_contents_dict = read_param_files(directory_path)
     # process each parameter type
@@ -131,6 +139,9 @@ def convert_gsma_param(directory_path):
     
     if "EventLog.param" in gsma_params_contents_dict:
         process_event_log_params(gsma_params_contents_dict)
+
+    if "CustomScript.param" in gsma_params_contents_dict:
+        process_custom_script_params(gsma_params_contents_dict)
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Process GSMA parameters and save to Zabbix configuration.")
