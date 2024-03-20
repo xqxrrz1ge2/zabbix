@@ -160,9 +160,27 @@ def parser_customscript(file, line=None, initialize=False):
         '{#SEVERITY}': level.upper()
     }]
 
+def parser_url(file, line=None, initialize=False):
+    """Parse URL monitor configuration."""
+    if initialize:
+        file.write("#tag;url;servername;severity\n")
+        return []
+    
+    parts = line.strip().split(';')
+    if len(parts) != 4:
+        return []
+    
+    tag, url, servername, level = parts
+    return [{
+        '{#TAG}': tag,
+        '{#URL}': url,
+        '{#SERVERNAME}': servername,
+        '{#SEVERITY}': level.upper()
+    }]
+
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-t', '--conf_type', required=True, help="config type: log/process/tcpport/service(windows)/eventlog(windows)/customscript")
+    parser.add_argument('-t', '--conf_type', required=True, help="config type: log/process/tcpport/service(windows)/eventlog(windows)/customscript/url")
     args = parser.parse_args()
 
     parsers = {
@@ -172,6 +190,7 @@ def main():
         'eventlog': ('zbx_eventlogMonitor.conf', parser_eventlog),
         'tcpport': ('zbx_networkMonitor.conf', parser_tcpport),
         'customscript': ('zbx_customScriptMonitor.conf', parser_customscript),
+        'url': ('zbx_urlMonitor.conf', parser_url)
     }
 
     if args.conf_type in parsers:
