@@ -23,11 +23,8 @@ Steps:
 5. Add user params config file in folder C:\zabbix\conf\zabbix_agent2.d:
 6. Create userparams.conf
 5. Add lines to this file:
-    UserParameter=logmondiscover,C:\zabbix\scripts\python\python.exe C:\zabbix\scripts\zbx_all_in_one.py -t log
-    UserParameter=processmondiscover,C:\zabbix\scripts\python\python.exe C:\zabbix\scripts\zbx_all_in_one.py -t process
-    UserParameter=servicemondiscover,C:\zabbix\scripts\python\python.exe C:\zabbix\scripts\zbx_all_in_one.py -t service
-    UserParameter=eventlogmondiscover,C:\zabbix\scripts\python\python.exe C:\zabbix\scripts\zbx_all_in_one.py -t eventlog
-    UserParameter=customscriptmondiscover,C:\zabbix\scripts\python\python.exe C:\zabbix\scripts\zbx_all_in_one.py -t customscript
+    #log / process / service / eventlog / customscript
+    UserParameter=mondiscover[*],C:\zabbix\scripts\python\python.exe C:\zabbix\scripts\zbx_all_in_one.py -t $1
 7. Restart agent through Windows Service Manager
 
 
@@ -41,8 +38,6 @@ On UNIX or Linux Platform, please use python2 or python3
     touch userparams.conf
 5. Add lines to this file:
     #please use python2 or python3 accordingly
-    UserParameter=logmondiscover,python /etc/zabbix/scripts/zbx_all_in_one.py -t log
-    UserParameter=processmondiscover,python /etc/zabbix/scripts/zbx_all_in_one.py -t process
-    UserParameter=tcpportmondiscover,python /etc/zabbix/scripts/zbx_all_in_one.py -t tcpport
-    UserParameter=customscriptmondiscover,python /etc/zabbix/scripts/zbx_all_in_one.py -t customscript
+    #log / process / tcpport / customscript
+    UserParameter=mondiscover[*],python /etc/zabbix/scripts/zbx_all_in_one.py -t $1
 6. Restart agent using systemctl restart zabbix-agent or systemctl restart zabbix-agent2
