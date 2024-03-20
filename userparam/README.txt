@@ -43,3 +43,9 @@ On UNIX or Linux Platform, please use python2 or python3
     UserParameter=mondiscover[*],python /etc/zabbix/scripts/zbx_all_in_one.py -t $1
     UserParameter=cust.url.check[*],python /etc/zabbix/scripts/url_check.py $1
 6. Restart agent using systemctl restart zabbix-agent or systemctl restart zabbix-agent2
+
+
+###
+to enable customscript, please add below line to zabbix agent config file:
+    AllowKey=system.run[*]
+    
