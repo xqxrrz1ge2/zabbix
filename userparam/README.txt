@@ -27,6 +27,7 @@ Steps:
     UserParameter=processmondiscover,C:\zabbix\scripts\python\python.exe C:\zabbix\scripts\zbx_all_in_one.py -t process
     UserParameter=servicemondiscover,C:\zabbix\scripts\python\python.exe C:\zabbix\scripts\zbx_all_in_one.py -t service
     UserParameter=eventlogmondiscover,C:\zabbix\scripts\python\python.exe C:\zabbix\scripts\zbx_all_in_one.py -t eventlog
+    UserParameter=customscriptmondiscover,C:\zabbix\scripts\python\python.exe C:\zabbix\scripts\zbx_all_in_one.py -t customscript
 7. Restart agent through Windows Service Manager
 
 
@@ -43,4 +44,5 @@ On UNIX or Linux Platform, please use python2 or python3
     UserParameter=logmondiscover,python /etc/zabbix/scripts/zbx_all_in_one.py -t log
     UserParameter=processmondiscover,python /etc/zabbix/scripts/zbx_all_in_one.py -t process
     UserParameter=tcpportmondiscover,python /etc/zabbix/scripts/zbx_all_in_one.py -t tcpport
+    UserParameter=customscriptmondiscover,python /etc/zabbix/scripts/zbx_all_in_one.py -t customscript
 6. Restart agent using systemctl restart zabbix-agent or systemctl restart zabbix-agent2
