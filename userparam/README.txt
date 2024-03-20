@@ -48,3 +48,4 @@ On UNIX or Linux Platform, please use python2 or python3
 ###
 to enable customscript, please add below line to zabbix agent config file:
     AllowKey=system.run[*]
+    Timeout=10
