@@ -135,10 +135,10 @@ def parser_tcpport(file, line=None, initialize=False):
     if len(parts) != 4:
         return []
     
-    tag, host, port, level = parts
+    tag, hostname, port, level = parts
     return [{
         '{#TAG}': tag,
-        '{#HOST}': host,
+        '{#HOSTNAME}': hostname,
         '{#PORT}': port,
         '{#SEVERITY}': level.upper()
     }]

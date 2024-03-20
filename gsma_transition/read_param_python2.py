@@ -125,6 +125,14 @@ def process_custom_script_params(gsma_params_contents_dict):
         final_result = ";".join([script_tag, script_full_name, "CRITICAL"])
         append_to_zabbix_configration_file("zbx_customScriptMonitor.conf", final_result)
 
+def process_url_params(gsma_params_contents_dict):
+    url_contents_lists = gsma_params_contents_dict.get("URLMonitor.param")
+    for item in url_contents_lists:
+        elements = item.split(";")
+        url_tag, url, servername, severity = elements[0], elements[1], elements[3], elements[4]
+        final_result = ";".join([url_tag, url, servername, severity])
+        append_to_zabbix_configration_file("zbx_urlMonitor.conf", final_result)
+
 def convert_gsma_param(directory_path):
     gsma_params_contents_dict = read_param_files(directory_path)
     # process each parameter type
@@ -142,6 +150,9 @@ def convert_gsma_param(directory_path):
 
     if "CustomScript.param" in gsma_params_contents_dict:
         process_custom_script_params(gsma_params_contents_dict)
+
+    if "URLMonitor.param" in gsma_params_contents_dict:
+        process_url_params(gsma_params_contents_dict)
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Process GSMA parameters and save to Zabbix configuration.")
