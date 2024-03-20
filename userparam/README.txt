@@ -23,7 +23,7 @@ Steps:
 5. Add user params config file in folder C:\zabbix\conf\zabbix_agent2.d:
 6. Create userparams.conf
 5. Add lines to this file:
-    #log / process / service / eventlog / customscript
+    #log / process / service / eventlog / tcpport / customscript
     UserParameter=mondiscover[*],C:\zabbix\scripts\python\python.exe C:\zabbix\scripts\zbx_all_in_one.py -t $1
     UserParameter=cust.url.check[*],C:\zabbix\scripts\python\python.exe C:\zabbix\scripts\url_check.py $1
 7. Restart agent through Windows Service Manager
