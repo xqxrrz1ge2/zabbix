@@ -2,12 +2,12 @@ import sys
 from urllib.request import urlopen
 from urllib.error import URLError, HTTPError
 
-def check_url_status(url):
+def check_url_status(url, timeout = 10):
     if not (url.startswith("http://") or url.startswith("https://")):
         print("Error: URL should start with 'http://' or 'https://'")
         return
     try:
-        response = urlopen(url)
+        response = urlopen(url, timeout = timeout)
         if response.status == 200:
             print(0)
         else:
