@@ -3,7 +3,8 @@ import urllib2
 
 def check_url_status(url, timeout = 5):
     if not (url.startswith("http://") or url.startswith("https://")):
-        print "Error: URL should start with 'http://' or 'https://'"
+        #print "Error: URL should start with 'http://' or 'https://'"
+        print 1
         return
     
     try:
