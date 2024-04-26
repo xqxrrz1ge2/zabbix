@@ -184,7 +184,7 @@ def parse_config_customscript():
     file_path = scripts_dir + "zbx_customScriptMonitor.conf"
     if not os.path.exists(file_path):
         with open(file_path, 'w') as file:
-            file.write("#tag;command;severity\n")
+            file.write("#tag;script;severity\n")
     with open(file_path, 'r') as f:
         for line in f:
             if not line.strip() or line.strip().startswith("#"):
@@ -194,7 +194,7 @@ def parse_config_customscript():
             tag, command, level = parts
             entry = {
                 '{#TAG}': tag,
-                '{#COMMAND}': command,
+                '{#SCRIPT}': command,
                 '{#SEVERITY}': level.upper()
             }
             result.append(entry)
