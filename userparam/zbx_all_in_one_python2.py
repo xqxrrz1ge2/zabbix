@@ -178,9 +178,30 @@ def parser_url(file, line=None, initialize=False):
         '{#SEVERITY}': level.upper()
     }]
 
+##add file count monitor
+##2024-04-29
+def parse_file_count(file, line=None, initialize=False):
+    """Parse file count monitor configuration."""
+    if initialize:
+        file.write("#tag;path;regex_filename;severity\n")
+        return []
+    
+    parts = line.strip().split(';')
+    if len(parts) != 4:
+        return []
+    
+    tag, path, pattern, level = parts
+    return [{
+        '{#TAG}': tag,
+        '{#PATH}': path,
+        '{#PATTERN}': pattern,
+        '{#SEVERITY}': level.upper()
+    }]
+
+
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-t', '--conf_type', required=True, help="config type: log/process/tcpport/service(windows)/eventlog(windows)/customscript/url")
+    parser.add_argument('-t', '--conf_type', required=True, help="config type: log/process/tcpport/service(windows)/eventlog(windows)/customscript/url/filecount")
     args = parser.parse_args()
 
     parsers = {
@@ -190,7 +211,8 @@ def main():
         'eventlog': ('zbx_eventlogMonitor.conf', parser_eventlog),
         'tcpport': ('zbx_networkMonitor.conf', parser_tcpport),
         'customscript': ('zbx_customScriptMonitor.conf', parser_customscript),
-        'url': ('zbx_urlMonitor.conf', parser_url)
+        'url': ('zbx_urlMonitor.conf', parser_url),
+        'filecount': ('zbx_fileCountMonitor.conf', parse_file_count)
     }
 
     if args.conf_type in parsers:
