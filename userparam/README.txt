@@ -9,6 +9,12 @@ Add the following content:
     [Service]
     User=root
     Group=root
+Enable custom script support:
+    ####add below 2 lines in Zabbix Agent config file
+    ####/etc/zabbix/zabbix_agent2.conf on UNIX/LINUX Platform
+    ####C:\zabbix\zabbix_agent2.conf on Windows Platform
+    AllowKey=system.run[*]
+    Timeout=10
 Reload daemons and restart the zabbix-agent service:
     systemctl daemon-reload
     systemctl restart zabbix-agent
@@ -43,9 +49,3 @@ On UNIX or Linux Platform, please use python2 or python3
     UserParameter=mondiscover[*],/usr/bin/python3 /etc/zabbix/scripts/zbx_all_in_one.py -t $1
     UserParameter=cust.url.check[*],/usr/bin/python3 /etc/zabbix/scripts/url_check.py $1
 6. Restart agent using systemctl restart zabbix-agent or systemctl restart zabbix-agent2
-
-
-###
-to enable customscript, please add below line to zabbix agent config file:
-    AllowKey=system.run[*]
-    Timeout=10
