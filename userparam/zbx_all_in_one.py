@@ -237,18 +237,19 @@ def parse_config_fileCount():
     file_path = scripts_dir + "zbx_fileCountMonitor.conf"
     if not os.path.exists(file_path):
         with open(file_path, 'w') as file:
-            file.write("#tag;path;regex_include;severity\n")
+            file.write("#tag;path;regex_include;count_threshold;severity\n")
     with open(file_path, 'r') as f:
         for line in f:
             if not line.strip() or line.strip().startswith("#"):
                 continue
 
             parts = line.strip().split(';')
-            tag, path, pattern_include, level = parts
+            tag, path, pattern_include, threshold, level = parts
             entry = {
                 '{#TAG}': tag,
                 '{#PATH}': path,
                 '{#PATTERN}': pattern_include,
+                '{#THRESHOLD}': threshold,
                 '{#SEVERITY}': level.upper()
             }
             result.append(entry)
