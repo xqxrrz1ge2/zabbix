@@ -229,11 +229,39 @@ def parse_config_url():
 
     print(json_data, end="")
 
+##add directory files count monitor support
+##2024-04-29
+def parse_config_fileCount():
+    scripts_dir = check_dir()
+    result = []
+    file_path = scripts_dir + "zbx_fileCountMonitor.conf"
+    if not os.path.exists(file_path):
+        with open(file_path, 'w') as file:
+            file.write("#tag;path;regex_include;severity\n")
+    with open(file_path, 'r') as f:
+        for line in f:
+            if not line.strip() or line.strip().startswith("#"):
+                continue
+
+            parts = line.strip().split(';')
+            tag, path, pattern_include, level = parts
+            entry = {
+                '{#TAG}': tag,
+                '{#PATH}': path,
+                '{#PATTERN}': pattern_include,
+                '{#SEVERITY}': level.upper()
+            }
+            result.append(entry)
+
+    json_data = json.dumps(result)
+
+    print(json_data, end="")
+
 #add arguments support
 def main():
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('-t', '--conf_type', required=True, help="config type: log/process/tcpport/service(windows)/eventlog(windows)/customscript/url")
+    parser.add_argument('-t', '--conf_type', required=True, help="config type: log/process/tcpport/service(windows)/eventlog(windows)/customscript/url/filecount")
     args = parser.parse_args()
 
     if args.conf_type == 'log':
@@ -250,6 +278,8 @@ def main():
         parse_config_customscript()
     elif args.conf_type == 'url':
         parse_config_url()
+    elif args.conf_type == 'filecount':
+        parse_config_fileCount()
     else:
         parser.print_help()
         exit(1)
