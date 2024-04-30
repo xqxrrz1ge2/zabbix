@@ -183,19 +183,20 @@ def parser_url(file, line=None, initialize=False):
 def parse_file_count(file, line=None, initialize=False):
     """Parse file count monitor configuration."""
     if initialize:
-        file.write("#tag;path;regex_filename;count_threshold;severity\n")
+        file.write("#tag;path;regex_filename;min_threshold;max_threshold;severity\n")
         return []
     
     parts = line.strip().split(';')
-    if len(parts) != 5:
+    if len(parts) != 6:
         return []
     
-    tag, path, pattern, threshold, level = parts
+    tag, path, pattern, minthreshold, maxthreshold, level = parts
     return [{
         '{#TAG}': tag,
         '{#PATH}': path,
         '{#PATTERN}': pattern,
-        '{#THRESHOLD}': threshold,
+        '{#MINTHRESHOLD}': minthreshold,
+        '{#MAXTHRESHOLD}': maxthreshold,
         '{#SEVERITY}': level.upper()
     }]
 
